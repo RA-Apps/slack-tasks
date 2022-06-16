@@ -40,9 +40,9 @@ registerListeners(app);
     await sequelize.authenticate();
     await sequelize.sync({ force: true });
     // eslint-disable-next-line no-console
-    console.log('All models were synchronized successfully.');
+    console.log('Всё успешно синхронизировано.');
     // eslint-disable-next-line no-console
-    console.log('Connection has been established successfully.');
+    console.log('Соединение успешно установлено.');
     // Start your app
     await app.start();
 
