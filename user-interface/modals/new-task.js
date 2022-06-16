@@ -1,4 +1,5 @@
 const { Modal, Blocks, Elements } = require('slack-block-builder');
+const { Multiline } = require('slack-block-builder/dist/methods');
 
 module.exports = (prefilledTitle, currentUser) => {
   const textInput = (taskTitle) => {
@@ -19,6 +20,11 @@ module.exports = (prefilledTitle, currentUser) => {
     .blocks(
       Blocks.Input({ label: 'Наименование', blockId: 'taskTitle' }).element(
         textInput(prefilledTitle),
+      ),
+      Blocks.Input({ label: 'Наименование', blockId: 'descriptionTitle' }).element(
+        Elements.TextInput({
+          multiline: true,
+        }),
       ),
       Blocks.Input({ label: 'Ответственный', blockId: 'taskAssignUser' }).element(
         Elements.UserSelect({
