@@ -23,7 +23,7 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
       await ack({
         response_action: 'errors',
         errors: {
-          taskDueTime: "Please set a time for the date you've chosen",
+          taskDueTime: "Пожалуйста, установите время для выбранной вами даты",
         },
       });
       return;
@@ -35,8 +35,8 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
       await ack({
         response_action: 'errors',
         errors: {
-          taskDueDate: 'Please select a due date in the future',
-          taskDueTime: 'Please select a time in the future',
+          taskDueDate: 'Пожалуйста, выберите дату в будущем',
+          taskDueTime: 'Пожалуйста, выберите время в будущем',
         },
       });
       return;
@@ -91,7 +91,7 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
       } else {
         // TODO better error message and store it in /user-interface
         await client.chat.postMessage({
-          text: `Sorry, but we couldn't set a reminder for ${taskTitle}, as it's more than 120 days from now`,
+          text: `Извините, но мы не смогли установить задачу ${taskTitle} позже, поскольку до этого момента исполнения осталось более 120 дней`,
           channel: assignee.slackUserID,
         });
       }
@@ -102,9 +102,10 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
       view: modals.taskCreated(taskTitle),
     });
     if (selectedUser !== body.user.id) {
+      const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`).toRelativeCalendar();
       await client.chat.postMessage({
         channel: selectedUser,
-        text: `<@${body.user.id}> assigned you a new task:\n- *${taskTitle}*`,
+        text: `:new: задача назначена пользователем: <@${body.user.id}>\n:round_pushpin: *${taskTitle}*\n  срок исполнения: *${taskDueDate}*`,
       });
       await reloadAppHome(client, selectedUser, body.team.id);
     }
