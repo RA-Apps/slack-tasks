@@ -51,7 +51,7 @@ module.exports = (openTasks) => {
   }
 
   homeTab.blocks(
-    Header({ text: `У вас ${openTasks.length} открытых ${pluralize('штук', openTasks.length)}` }),
+    Header({ text: `У вас ${openTasks.length} открытых ${pluralize('задач', openTasks.length)}` }),
     Divider(),
     tasksInputsArray,
   );

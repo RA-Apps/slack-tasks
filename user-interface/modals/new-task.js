@@ -5,13 +5,13 @@ module.exports = (prefilledTitle, currentUser) => {
   const textInput = (taskTitle) => {
     if (taskTitle) {
       return Elements.TextInput({
-        placeholder: 'Нужно это сделать',
+        placeholder: 'Что нежно сделать?',
         actionId: 'taskTitle',
         initialValue: taskTitle,
       });
     }
     return Elements.TextInput({
-      placeholder: 'Нужно это сделать',
+      placeholder: 'Что нежно сделать?',
       actionId: 'taskTitle',
     });
   };
@@ -21,7 +21,7 @@ module.exports = (prefilledTitle, currentUser) => {
       Blocks.Input({ label: 'Наименование', blockId: 'taskTitle' }).element(
         textInput(prefilledTitle),
       ),
-      Blocks.Input({ label: 'Наименование', blockId: 'descriptionTitle' }).element(
+      Blocks.Input({ label: 'Описание', blockId: 'descriptionTitle', optional: true }).element(
         Elements.TextInput({
           multiline: true,
         }),
