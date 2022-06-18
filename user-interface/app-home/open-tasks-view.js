@@ -10,6 +10,9 @@ module.exports = (openTasks) => {
     Actions({ blockId: 'task-creation-actions' }).elements(
       Elements.Button({ text: 'Текущие задачи' }).value('app-home-nav-open').actionId('app-home-nav-open').primary(true),
       Elements.Button({ text: 'Выполнено' }).value('app-home-nav-completed').actionId('app-home-nav-completed'),
+      Elements.Button({ text: 'Назначены мной' })
+        .actionId('app-home-nav-my')
+        .value('app-home-nav-my'),
       Elements.Button({ text: 'Создать задачу' }).value('app-home-nav-create-a-task').actionId('app-home-nav-create-a-task'),
     ),
   );
@@ -33,17 +36,19 @@ module.exports = (openTasks) => {
   let start = 0;
   const end = openTasks.length;
   const maxOptionsLength = 10;
-
   for (start, end; start < end; start += maxOptionsLength) {
     holdingArray = openTasks.slice(start, start + maxOptionsLength);
-    tasksInputsArray.push(
+    tasksInputsArray.push(  
       Input({ label: ' ', blockId: `open-task-status-change-${start}` }).dispatchAction().element(Elements.Checkboxes({ actionId: 'blockOpenTaskCheckboxClicked' }).options(holdingArray.map((task) => {
         const option = {
           text: `*${task.title}*`,
           value: `open-task-${task.id}`,
         };
+        // if (task.description) {
+        //   option.description = `${task.description}`;
+        // }
         if (task.dueDate) {
-          option.description = `Срок исполнения ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()}`;
+          option.description = `Срок исполнения: ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()}`;
         }
         return Bits.Option(option);
       }))),
