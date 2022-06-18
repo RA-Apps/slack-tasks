@@ -23,6 +23,7 @@ module.exports = (prefilledTitle, currentUser) => {
       ),
       Blocks.Input({ label: 'Описание', blockId: 'taskDescription', optional: true }).element(
         Elements.TextInput({
+          actionId: 'taskDescription',
           multiline: true,
         }),
       ),

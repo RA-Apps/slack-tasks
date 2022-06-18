@@ -1,8 +1,8 @@
 const { Modal, Blocks } = require('slack-block-builder');
 
-module.exports = (taskTitle, selectedUser,taskDueDate) => Modal({ title: 'Задача создана', callbackId: 'task-created-modal' })
+module.exports = (taskTitle, taskDescription, selectedUser,taskDueDate) => Modal({ title: 'Задача создана', callbackId: 'task-created-modal' })
   .blocks(
     Blocks.Section({
-      text: `${taskTitle} \nИсполнитель: <@${selectedUser}> \nСрок исполнения: ${taskDueDate}`,
+      text: `${taskTitle} \n${taskDescription} \nИсполнитель: <@${selectedUser}> \nСрок исполнения: ${taskDueDate}`,
     }),
   ).buildToJSON();
