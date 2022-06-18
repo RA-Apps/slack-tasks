@@ -9,15 +9,18 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
   const providedValues = view.state.values;
 
   const taskTitle = providedValues.taskTitle.taskTitle.value;
-
+  console.log (taskTitle);
+  const taskDescription = providedValues.taskDescription.taskDescription.value;
+  console.log(taskDescription);
   const selectedDate = providedValues.taskDueDate.taskDueDate.selected_date;
   const selectedTime = providedValues.taskDueTime.taskDueTime.selected_time;
 
-  const selectedUser =
-    providedValues.taskAssignUser.taskAssignUser.selected_user;
+  const selectedUser = providedValues.taskAssignUser.taskAssignUser.selected_user;
 
-  const task = Task.build({ title: taskTitle });
+  const task = Task.build({title: taskTitle});
 
+  const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`).toRelativeCalendar();
+  // task.description = taskDescription;
   if (selectedDate) {
     if (!selectedTime) {
       await ack({
@@ -99,7 +102,7 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
     await task.save();
     await ack({
       response_action: 'update',
-      view: modals.taskCreated(taskTitle),
+      view: modals.taskCreated(taskTitle, selectedUser,taskDueDate),
     });
     if (selectedUser !== body.user.id) {
       const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`).toRelativeCalendar();

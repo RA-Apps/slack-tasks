@@ -21,7 +21,7 @@ module.exports = (prefilledTitle, currentUser) => {
       Blocks.Input({ label: 'Наименование', blockId: 'taskTitle' }).element(
         textInput(prefilledTitle),
       ),
-      Blocks.Input({ label: 'Описание', blockId: 'descriptionTitle', optional: true }).element(
+      Blocks.Input({ label: 'Описание', blockId: 'taskDescription', optional: true }).element(
         Elements.TextInput({
           multiline: true,
         }),
@@ -31,12 +31,12 @@ module.exports = (prefilledTitle, currentUser) => {
           actionId: 'taskAssignUser',
         }).initialUser(currentUser),
       ),
-      Blocks.Input({ label: 'Срок исполнения', blockId: 'taskDueDate', optional: true }).element(
+      Blocks.Input({ label: 'Срок исполнения', blockId: 'taskDueDate' }).element(
         Elements.DatePicker({
           actionId: 'taskDueDate',
         }),
       ),
-      Blocks.Input({ label: 'Время', blockId: 'taskDueTime', optional: true }).element(
+      Blocks.Input({ label: 'Время', blockId: 'taskDueTime' }).element(
         Elements.TimePicker({
           actionId: 'taskDueTime',
         }),

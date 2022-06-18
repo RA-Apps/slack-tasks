@@ -21,6 +21,9 @@ module.exports = (recentlyCompletedTasks) => {
         .value('app-home-nav-completed')
         .actionId('app-home-nav-completed')
         .primary(true),
+      Elements.Button({ text: 'Назначены мной' })
+        .actionId('app-home-nav-my')
+        .value('app-home-nav-my'),
       Elements.Button({ text: 'Создать задачу' })
         .value('app-home-nav-create-a-task')
         .actionId('app-home-nav-create-a-task'),
