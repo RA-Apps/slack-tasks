@@ -1,11 +1,4 @@
-const {
-  HomeTab,
-  Header,
-  Divider,
-  Section,
-  Actions,
-  Elements,
-} = require('slack-block-builder');
+const { HomeTab, Header, Divider, Section, Actions, Elements } = require('slack-block-builder');
 const pluralize = require('pluralize');
 
 module.exports = (recentlyCompletedTasks) => {
@@ -40,7 +33,7 @@ module.exports = (recentlyCompletedTasks) => {
   }
 
   const completedTaskList = recentlyCompletedTasks.map((task) =>
-    Section({ text: `• ~${task.title}~` }).accessory(
+    Section({ text: `• ~${task.title}~\n   ~${task.description}~` }).accessory(
       Elements.Button({ text: 'Возобновить' })
         .value(`${task.id}`)
         .actionId('reopen-task'),
@@ -55,6 +48,7 @@ module.exports = (recentlyCompletedTasks) => {
     }),
     Divider(),
     completedTaskList,
+    console.log(completedTaskList),
   );
 
   return homeTab.buildToJSON();

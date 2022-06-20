@@ -3,9 +3,9 @@ const { Message, Section, Button } = require('slack-block-builder');
 module.exports = (postAt, channel, taskTitle, dueDate, taskID) => Message({
   channel,
   postAt,
-  text: `You asked me to remind you about "${taskTitle}".`,
+  text: `У вас есть невыполненная задача: "${taskTitle}".`,
 }).blocks(
-  Section({ text: `:wave: You asked me to remind you about "*${taskTitle}*".` })
-    .accessory(Button({ text: 'Mark as done', value: `task-${taskID}`, actionId: 'button-mark-as-done' })),
-  Section().fields(['*Task title*', '*Срок исполнения*', taskTitle, dueDate]),
+  Section({ text: `:wave: У вас есть невыполненная задача: "*${taskTitle}*".` })
+    .accessory(Button({ text: 'Задача выполнена', value: `task-${taskID}`, actionId: 'button-mark-as-done' })),
+  Section().fields(['*Наименование*', '*Срок исполнения*', taskTitle, dueDate]),
 ).buildToObject();

@@ -5,6 +5,7 @@ const pluralize = require('pluralize');
 const { DateTime } = require('luxon');
 
 
+
 module.exports = (openTasks) => {
   const homeTab = HomeTab({ callbackId: 'tasks-home', privateMetaData: 'open' }).blocks(
     Actions({ blockId: 'task-creation-actions' }).elements(
@@ -44,12 +45,7 @@ module.exports = (openTasks) => {
           text: `*${task.title}*`,
           value: `open-task-${task.id}`,
         };
-        // if (task.description) {
-        //   option.description = `${task.description}`;
-        // }
-        if (task.dueDate) {
-          option.description = `Срок исполнения: ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()}`;
-        }
+          option.description = `Срок исполнения: ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()} \n`;
         return Bits.Option(option);
       }))),
     );

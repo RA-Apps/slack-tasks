@@ -103,7 +103,7 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
       const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`).toRelativeCalendar();
       await client.chat.postMessage({
         channel: selectedUser,
-        text: `:new: задача назначена пользователем: <@${body.user.id}>\n:round_pushpin: *${taskTitle}*\n  срок исполнения: *${taskDueDate}*`,
+        text: `Задача назначена пользователем: <@${body.user.id}>\n*${taskTitle}*\n${taskDescription}\nСрок исполнения: *${taskDueDate}*`,
       });
       await reloadAppHome(client, selectedUser, body.team.id);
     }
