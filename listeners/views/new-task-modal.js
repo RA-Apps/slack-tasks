@@ -8,14 +8,19 @@ const { reloadAppHome } = require('../../utilities');
 const newTaskModalCallback = async ({ ack, view, body, client }) => {
   const providedValues = view.state.values;
   const taskTitle = providedValues.taskTitle.taskTitle.value;
-  const taskDescription = providedValues.taskDescription.taskDescription.value;
   const selectedDate = providedValues.taskDueDate.taskDueDate.selected_date;
   const selectedTime = providedValues.taskDueTime.taskDueTime.selected_time;
   const selectedUser = providedValues.taskAssignUser.taskAssignUser.selected_user;
   const task = Task.build({title: taskTitle});
-
   const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`).toRelativeCalendar();
-  task.description = taskDescription;
+  taskDescription = providedValues.taskDescription.taskDescription.value;
+  if (taskDescription == null) {
+    taskDescription = "Задача без описания";
+    task.description = taskDescription;
+  }
+  else {
+    task.description = taskDescription;
+  }
   if (selectedDate) {
     if (!selectedTime) {
       await ack({
