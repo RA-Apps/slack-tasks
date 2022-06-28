@@ -49,23 +49,26 @@ module.exports = (recentlyCompletedTasks) => {
       )}`,
     }),
     Divider(),
-    recentlyCompletedTasks.map(
-      (task) => 
-        Section()
+    recentlyCompletedTasks.map((task) =>
+      Section()
         .fields([`:white_check_mark: ~*${task.title}*~`])
         .fields([`\n`])
         .fields([`${task.description}`])
         .fields([`\n`])
-        .fields([`Срок исполнения: ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()}`])
+        .fields([
+          `Срок исполнения: *${DateTime.fromJSDate(
+            task.dueDate
+          ).toRelativeCalendar()}*`,
+        ])
         .fields([`\n`])
-        .fields([`Задача назначена: `])
+        .fields([`Задача назначена пользователем: <@${task.creatorSlackId}>`])
         .fields([`\n`])
         .accessory(
           Elements.Button({ text: "Возобновить" })
             .value(`${task.id}`)
             .actionId("reopen-task")
         )
-    ),
+    )
   );
   return homeTab.buildToJSON();
 };

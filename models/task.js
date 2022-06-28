@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,  
     },
+    creatorSlackId: {
+      type: DataTypes.STRING,  
+    },
     status: {
       type: DataTypes.ENUM,
       values: ['OPEN', 'CLOSED'],

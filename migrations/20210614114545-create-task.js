@@ -13,6 +13,9 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      creatorSlackId: {
+        type: Sequelize.STRING,
+      },
       status: {
         type: Sequelize.ENUM('OPEN', 'CLOSED'),
       },
