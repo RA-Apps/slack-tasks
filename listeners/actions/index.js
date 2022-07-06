@@ -24,6 +24,10 @@ module.exports.register = (app) => {
     reopenTaskCallback,
   );
   app.action(
+    { action_id: 'delete-task', type: 'block_actions' },
+    reopenTaskCallback,
+  );
+  app.action(
     {
       action_id: 'blockOpenTaskCheckboxClicked',
       type: 'block_actions',

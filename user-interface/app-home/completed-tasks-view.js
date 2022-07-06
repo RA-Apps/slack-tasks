@@ -4,6 +4,8 @@ const {
   Divider,
   Section,
   Actions,
+  Blocks,
+  Utilities,
   Elements,
   user,
 } = require("slack-block-builder");
@@ -40,35 +42,89 @@ module.exports = (recentlyCompletedTasks) => {
     );
     return homeTab.buildToJSON();
   }
-
+  let temp = [];
   homeTab.blocks(
-    Header({
+    Blocks.Header({
       text: `У вас ${recentlyCompletedTasks.length} выполненных ${pluralize(
         "задач",
         recentlyCompletedTasks.length
       )}`,
     }),
     Divider(),
-    recentlyCompletedTasks.map((task) =>
-      Section()
-        .fields([`:white_check_mark: ~*${task.title}*~`])
-        .fields([`\n`])
-        .fields([`${task.description}`])
-        .fields([`\n`])
-        .fields([
+    recentlyCompletedTasks.map((task) => {
+      temp.push(
+        Blocks.Section({
+          text: `:white_check_mark: *${task.title}* \n ${task.description}`,
+        }).fields([
           `Срок исполнения: *${DateTime.fromJSDate(
             task.dueDate
-          ).toRelativeCalendar()}*`,
+          ).toRelativeCalendar()}*;   Назначил пользователь: <@${
+            task.creatorSlackId
+          }>`,
         ])
-        .fields([`\n`])
-        .fields([`Задача назначена пользователем: <@${task.creatorSlackId}>`])
-        .fields([`\n`])
-        .accessory(
-          Elements.Button({ text: "Возобновить" })
-            .value(`${task.id}`)
-            .actionId("reopen-task")
+      );
+      temp.push(
+        Blocks.Context().elements(
+          `Исполнитель: :bust_in_silhouette: ${task.creatorSlackId}    Срок исполнения: :hourglass_flowing_sand: Завтра`
         )
-    )
+      );
+      // Blocks.Divider(),
+      // Blocks.Section({
+      //   text: `:white_check_mark: *${task.title}* \n ${task.description}`,
+      // }).fields([
+      //   `Срок исполнения: *${DateTime.fromJSDate(
+      //     task.dueDate
+      //   ).toRelativeCalendar()}*;   Назначил пользователь: <@${
+      //     task.creatorSlackId
+      //   }>`
+      // ])
+    }),
+    temp
+    //   Blocks.Section({
+    //     text: `:white_check_mark: *Неподкупность государственных СМИ сделала своё дело*`,
+    //   }),
+    //   Blocks.Section({
+    //     text: `Вот вам яркий пример современных тенденций — курс на социально-ориентированный национальный проект влечет за собой процесс внедрения и модернизации новых принципов формирования материально-технической и кадровой базы. Противоположная точка зрения подразумевает, что некоторые особенности внутренней политики представлены в исключительно положительном свете.`,
+    //   }),
+    //   Blocks.Actions().elements(
+    //     Elements.Button({ text: `:large_green_circle: Возобновить`})
+    //       .actionId('reopen'),
+    //     Elements.Button({ text: `Удалить`})
+    //       .actionId('delete')
+    //       .danger()
+    //   ),
+    //   Blocks.Context().elements(`Исполнитель: :bust_in_silhouette: @Роман Апанович    Срок исполнения: :hourglass_flowing_sand: Завтра`),
+    //   Blocks.Divider(),
+    //   Blocks.Section({
+    //     text: `:white_check_mark: *Неподкупность государственных СМИ сделала своё дело*`,
+    //   }),
+    //   Blocks.Section({
+    //     text: `Вот вам яркий пример современных тенденций — курс на социально-ориентированный национальный проект влечет за собой процесс внедрения и модернизации новых принципов формирования материально-технической и кадровой базы. Противоположная точка зрения подразумевает, что некоторые особенности внутренней политики представлены в исключительно положительном свете.`,
+    //   }),
+    //   Blocks.Actions().elements(
+    //     Elements.Button({ text: `:large_green_circle: Возобновить`})
+    //       .actionId('reopen'),
+    //     Elements.Button({ text: `Удалить`})
+    //       .actionId('delete')
+    //       .danger()
+    //   ),
+    //   Blocks.Context().elements(`Исполнитель: :bust_in_silhouette: @Роман Апанович    Срок исполнения: :hourglass_flowing_sand: Завтра`),
+    //   Blocks.Divider(),
+    //   Blocks.Section({
+    //     text: `:white_check_mark: *Неподкупность государственных СМИ сделала своё дело*`,
+    //   }),
+    //   Blocks.Section({
+    //     text: `Вот вам яркий пример современных тенденций — курс на социально-ориентированный национальный проект влечет за собой процесс внедрения и модернизации новых принципов формирования материально-технической и кадровой базы. Противоположная точка зрения подразумевает, что некоторые особенности внутренней политики представлены в исключительно положительном свете.`,
+    //   }),
+    //   Blocks.Actions().elements(
+    //     Elements.Button({ text: `:large_green_circle: Возобновить`})
+    //       .actionId('reopen'),
+    //     Elements.Button({ text: `Удалить`})
+    //       .actionId('delete')
+    //       .danger()
+    //   ),
+    //   Blocks.Context().elements(`Исполнитель: :bust_in_silhouette: @Роман Апанович    Срок исполнения: :hourglass_flowing_sand: Завтра`),
+    //   Blocks.Divider()
   );
   return homeTab.buildToJSON();
 };
