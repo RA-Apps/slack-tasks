@@ -34,6 +34,7 @@ module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
             [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
           },
         },
+        order: [['dueDate', 'DESC']],
       });
 
       await client.views.publish({

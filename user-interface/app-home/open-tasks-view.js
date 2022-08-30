@@ -5,9 +5,7 @@ const {
   Section,
   Actions,
   Elements,
-  Blocks,
-  Input,
-  Bits,
+  Blocks
 } = require("slack-block-builder");
 const pluralize = require("pluralize");
 const { DateTime } = require("luxon");
@@ -22,7 +20,7 @@ module.exports = (openTasks) => {
         .value("app-home-nav-open")
         .actionId("app-home-nav-open")
         .primary(true),
-      Elements.Button({ text: "Выполнено" })
+      Elements.Button({ text: "Выполненные задачи" })
         .value("app-home-nav-completed")
         .actionId("app-home-nav-completed"),
       Elements.Button({ text: "Назначены мной" })
@@ -42,53 +40,30 @@ module.exports = (openTasks) => {
     );
     return homeTab.buildToJSON();
   }
-  /*
-    Block kit Options have a maximum length of 10, and most people have more than 10 open tasks
-    at a given time, so we break the openTasks list into chunks of ten
-    and add them as multiple blocks.
-  */
-  let temp = [];
-  const tasksInputsArray = [];
-  let holdingArray = [];
-  let start = 0;
-  const end = openTasks.length;
-  const maxOptionsLength = 10;
-  // console.log(openTasks)
+
+  let openTasksArray = [];
   openTasks.map((task) => {
-    tasksInputsArray.push(
+    openTasksArray.push(
       Blocks.Section({
-        text: `:white_check_mark: *${task.title}* \n ${task.description}`
+        text: `:pushpin: *${task.title}* \n ${task.description}`
       })
     );
-    tasksInputsArray.push(
+    openTasksArray.push(
       Blocks.Context().elements(
-        `Исполнитель: :bust_in_silhouette: ${task.creatorSlackId}    Срок исполнения: :hourglass_flowing_sand: Завтра`
+        `Задачу назначил: :bust_in_silhouette: <@${task.creatorSlackId}>    Срок исполнения: :hourglass_flowing_sand: ${DateTime.fromJSDate(task.dueDate).toRelativeCalendar()}`
       )
     );
+    openTasksArray.push(
+      Blocks.Actions().elements(
+      Elements.Button ({text: `:white_check_mark: Выполнено`})
+      .value(`task-${task.id}`)
+      .actionId('button-mark-as-done-home'),
+      )
+    );
+    openTasksArray.push(
+      Divider()
+    );
   })
-  // for (start, end; start < end; start += maxOptionsLength) {
-  //   holdingArray = openTasks.slice(start, start + maxOptionsLength);
-  //   console.log(111111111)
-  //   // console.log(holdingArray);
-  //   // console.log(111111111)
-  //   let title, desc, creatorSlackId;
-  //   holdingArray.map((task) => {
-  //     title = task?.title;
-  //     desc = task?.description;
-  //     creatorSlackId = task?.creatorSlackId;
-  //   })
-  //   tasksInputsArray.push(
-  //     Blocks.Section({
-  //       text: `:white_check_mark: *${title}* \n ${desc}`
-  //     })
-  //   );
-  //   tasksInputsArray.push(
-  //     Blocks.Context().elements(
-  //       `Исполнитель: :bust_in_silhouette: ${creatorSlackId}    Срок исполнения: :hourglass_flowing_sand: Завтра`
-  //     )
-  //   );
-  // }
-
   homeTab.blocks(
     Header({
       text: `У вас ${openTasks.length} открытых ${pluralize(
@@ -97,7 +72,7 @@ module.exports = (openTasks) => {
       )}`,
     }),
     Divider(),
-    tasksInputsArray
+    openTasksArray
   );
 
   return homeTab.buildToJSON();

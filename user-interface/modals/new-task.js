@@ -11,7 +11,7 @@ module.exports = (prefilledTitle, currentUser) => {
       });
     }
     return Elements.TextInput({
-      placeholder: 'Что нежно сделать?',
+      placeholder: 'Что нужно сделать?',
       actionId: 'taskTitle',
     });
   };

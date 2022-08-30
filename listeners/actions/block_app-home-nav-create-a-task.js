@@ -14,5 +14,5 @@ const appHomeNavCreateATaskCallback = async ({ body, ack, client }) => {
 };
 
 module.exports = {
-  appHomeNavCreateATaskCallback,
+  appHomeNavCreateATaskCallback
 };
